@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://*.firebasedatabase.app https://*.firebaseio.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https: wss:; frame-src https://*.firebaseapp.com https://*.firebasedatabase.app https://*.firebaseio.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PROTECTTÚ - S.O.S</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="images/icon-192.png">
+  <meta name="theme-color" content="#05070a">
+</head>
+<body>
+  <div class="container page-fade-in" style="text-align:center">
+    <header>
+      <h1 class="logo-title">CENTRAL S.O.S</h1>
+      <p class="subtitle" id="sosStatus">Pronto — mantenha premido</p>
+    </header>
+
+    <div class="sos-wrap">
+      <div class="sos-wave"></div>
+      <svg class="sos-ring" viewBox="0 0 220 220" aria-hidden="true">
+        <circle class="track" cx="110" cy="110" r="100"/>
+        <circle class="bar" id="sosBar" cx="110" cy="110" r="100"/>
+      </svg>
+      <button id="sos-magic-btn" class="sos-btn" type="button" aria-describedby="sosHelp">S.O.S</button>
+    </div>
+    <p class="muted" id="sosHelp" style="margin-bottom:20px">Mantenha premido <strong>1,5 s</strong> para abrir o SMS de socorro. Solte para cancelar.</p>
+
+    <label class="check" style="justify-content:center;margin-bottom:16px"><input type="checkbox" id="selfSiren" checked><span>Tocar o alarme sonoro neste telemóvel ao disparar</span></label>
+    <div id="semContactos" class="notice hidden" style="text-align:left">
+      Ainda não tem contactos de emergência. <a href="cadastro.html"><strong>Configure agora</strong></a> — sem eles o S.O.S não sabe a quem pedir ajuda.
+    </div>
+
+    <section id="resultado" class="glass-card hidden" style="text-align:left">
+      <h3>Mensagem preparada</h3>
+      <p class="muted" id="resNote" style="margin-bottom:10px"></p>
+      <pre id="resMsg" style="white-space:pre-wrap;font:inherit;font-size:.85rem;background:rgba(5,7,10,.6);padding:10px;border-radius:10px;margin-bottom:12px"></pre>
+      <div class="stack">
+        <a id="resSms" class="btn-danger" href="#">Abrir SMS outra vez</a>
+        <button id="resStop" class="btn-secondary" type="button">🔇 Parar alarme</button>
+        <button id="resCopy" class="btn-secondary" type="button">Copiar mensagem</button>
+      </div>
+    </section>
+
+    <section class="glass-card" style="text-align:left">
+      <h3>🛡️ Modo Guardião</h3>
+      <p class="muted" style="margin-bottom:12px">Se o telemóvel sofrer um movimento muito brusco, o PROTECTTÚ pergunta se está bem e toca o alarme. Sem resposta, dispara o S.O.S. Funciona com a app aberta e o ecrã ligado.</p>
+      <div class="form-group"><label for="gdTimeout">Tempo para responder</label>
+        <select id="gdTimeout" class="form-control"><option value="30">30 segundos</option><option value="60">1 minuto</option><option value="300">5 minutos</option><option value="1800">30 minutos</option></select></div>
+      <div class="stack"><button id="gdToggle" class="btn-primary" type="button">Ativar Guardião</button>
+        <button id="gdDark" class="btn-secondary btn-block" type="button">🌑 Modo discreto (ecrã preto)</button>
+        <button id="gdTest" class="btn-secondary btn-block" type="button">Testar alarme sonoro</button></div>
+      <p id="gdState" class="muted" style="margin-top:10px"></p>
+    </section>
+
+    <section class="glass-card" style="text-align:left">
+      <h3>Comunidade</h3>
+      <p class="muted" style="margin-bottom:12px">Com internet, o S.O.S também avisa a sua comunidade (se já entrou numa).</p>
+      <a class="btn-secondary btn-block" href="comunidade.html">Abrir comunidade</a>
+    </section>
+  </div>
+
+  <div id="nav"></div>
+  <script src="common.js"></script>
+  <script src="alarm.js"></script>
+  <script src="sos.js"></script>
+  <script src="guardian.js"></script>
+  <script type="module" src="alarmwatch.js"></script>
+</body>
+</html>

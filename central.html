@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https: wss:; frame-src https://*.firebaseapp.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>PROTECTTÚ — Central de Controlo</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="central.css">
+</head>
+<body class="central">
+  <section id="lock" class="lock">
+    <form id="login" class="glass-card" novalidate>
+      <h1 class="logo-title">CENTRAL</h1>
+      <p class="subtitle">Acesso restrito ao administrador</p>
+      <div class="form-group"><label for="em">E-mail</label><input id="em" class="form-control" type="email" autocomplete="username" required></div>
+      <div class="form-group"><label for="pw">Palavra-passe</label><input id="pw" class="form-control" type="password" autocomplete="current-password" required></div>
+      <div class="field-error" id="err" role="alert"></div>
+      <button class="btn-primary" id="go" type="submit">Entrar</button>
+    </form>
+  </section>
+
+  <main id="hud" class="hud hidden">
+    <header class="top">
+      <span class="hd">MONITORIZAÇÃO ATIVA//**</span>
+      <h1>PROTECTTÚ // CENTRAL DE CONTROLO // <span id="opsId"></span></h1>
+      <span class="tr"><span class="clock" id="clock"></span><span class="clock" id="idle"></span><span class="pill" id="link">Ligado</span><button class="btn-secondary btn-sm" id="out" type="button">Sair</button></span>
+    </header>
+    <div id="banner" class="banner hidden" role="alert"></div>
+
+    <div class="shell">
+      <nav class="side" aria-label="Secções da Central">
+        <button class="tb on" data-v="home" type="button">◉ Visão geral</button>
+        <button class="tb" data-v="map" type="button">⌖ Mapa</button>
+        <button class="tb" data-v="comms" type="button">♙ Comunidades</button>
+        <button class="tb" data-v="alerts" type="button">! Alertas</button>
+        <button class="tb" data-v="act" type="button">⌁ Atividade</button>
+        <button class="tb" data-v="pol" type="button">🚓 Polícia</button>
+        <button class="tb" data-v="sys" type="button">⚙ Sistema</button>
+      </nav>
+
+      <div class="views">
+        <section id="v-home" class="view on"><div class="home">
+          <aside class="fr left">
+            <div class="hd">Análise do sistema v.1</div><div id="nums" class="nums"></div>
+            <div class="hd">Último evento</div><div id="last" class="lines"></div>
+            <div class="hd">Atividade das últimas 24 h</div><div class="eq" id="eq"></div>
+            <div class="gwrap"><div class="gauge" id="gauge"><span id="gv">0%</span></div><div class="lines"><div>S.O.S RESPONDIDOS</div><div id="gsub"></div></div></div>
+          </aside>
+          <section class="ring"><div class="ringbox"><div id="map"></div><canvas id="ringc" aria-hidden="true"></canvas></div><div class="cap" id="cap">A AGUARDAR DADOS…</div></section>
+          <aside class="rcol">
+            <div class="fr"><div class="hd">Fila de ação — sem resposta</div>
+              <label class="mini">Agir se ninguém responder em
+                <select id="wait"><option value="5">5 min</option><option value="10">10 min</option><option value="15">15 min</option><option value="30">30 min</option></select></label>
+              <div id="queue"></div></div>
+            <div class="fr"><div class="hd">Comunidades</div><div id="commBtns"></div></div>
+          </aside>
+          <section class="fr strip"><div id="tags" class="tags"></div></section>
+        </div></section>
+
+        <section id="v-map" class="view"><div class="fr">
+          <div class="regtop"><div class="hd">Mapa operacional — todos os alertas</div>
+            <div class="mini"><select id="mapF"><option value="all">Todos os alertas</option><option value="sos">Só S.O.S</option><option value="un">Só sem resposta</option></select><span id="mapInfo"></span></div></div>
+          <div id="map2"></div></div></section>
+
+        <section id="v-comms" class="view">
+          <div class="fr"><div class="hd">Comunidades (clique para filtrar)</div><div class="regwrap"><table id="tComms"></table></div></div>
+          <div class="fr"><div class="hd" id="mHd">Membros</div><div class="regwrap"><table id="tMembers"></table></div></div></section>
+
+        <section id="v-alerts" class="view"><div class="fr">
+          <div class="regtop"><div class="hd">Registo completo de alertas</div>
+            <div class="tabs2"><button class="tb on" data-f="all" type="button">TODOS</button><button class="tb" data-f="sos" type="button">S.O.S</button><button class="tb" data-f="un" type="button">SEM RESPOSTA</button></div>
+            <button class="tb" id="csv" type="button">⬇ Exportar CSV</button></div>
+          <div class="regwrap"><table id="tAlerts"></table></div></div></section>
+
+        <section id="v-act" class="view"><div class="fr"><div class="hd">Atividade em tempo real</div><div id="tl" class="lines tl"></div></div></section>
+
+        <section id="v-pol" class="view"><div class="fr">
+          <div class="hd">Polícia mais próxima — unidades registadas</div><div id="units"></div>
+          <form id="uform" novalidate>
+            <input id="un" class="in" placeholder="Unidade (ex: Esquadra do Cazenga)" maxlength="60">
+            <input id="unum" class="in" type="tel" placeholder="Número" maxlength="20">
+            <div class="mini"><button class="tb" id="mark" type="button">📍 Marcar posição no mapa</button><span id="ucoord">sem posição</span></div>
+            <button class="tb go" type="submit">Guardar unidade</button><div class="field-error" id="uerr"></div>
+          </form></div></section>
+
+        <section id="v-sys" class="view">
+          <div class="fr"><div class="hd">Estado do sistema (dados reais)</div><div id="sys" class="lines"></div></div>
+          <div class="fr"><div class="hd">Adicionar comunidade existente à Central</div>
+            <form id="addc" novalidate><input id="addn" class="in" placeholder="Nome da comunidade" maxlength="40"><button class="tb go" type="submit">Adicionar</button><div class="field-error" id="adderr"></div></form></div></section>
+      </div>
+    </div>
+  </main>
+
+  <script src="common.js"></script>
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="central.js"></script>
+</body>
+</html>

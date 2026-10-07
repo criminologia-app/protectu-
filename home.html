@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://*.firebasedatabase.app https://*.firebaseio.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https: wss:; frame-src https://*.firebaseapp.com https://*.firebasedatabase.app https://*.firebaseio.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PROTECTTÚ - Início</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="images/icon-192.png">
+  <meta name="theme-color" content="#05070a">
+</head>
+<body>
+  <div class="container page-fade-in">
+    <header class="row" style="margin-bottom:20px">
+      <div>
+        <h1 class="logo-title" style="margin:0">PROTECTTÚ</h1>
+        <p class="muted">Sistema comunitário de emergência</p>
+      </div>
+      <span class="pill" data-online>Online</span>
+    </header>
+
+    <section class="glass-card row" style="border-left:4px solid var(--neon)">
+      <div>
+        <span class="muted">Estado da proteção</span>
+        <h2 id="estado" style="font-size:1.1rem">A verificar…</h2>
+      </div>
+      <a href="sos.html" class="btn-danger btn-sm" style="width:auto">🚨 S.O.S</a>
+    </section>
+
+    <section style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <a class="glass-card" href="sos.html" style="margin:0;text-align:center;text-decoration:none;color:inherit">
+        <h3>Botão S.O.S</h3><p class="muted">Pedido de socorro com GPS</p></a>
+      <a class="glass-card" href="comunidade.html" style="margin:0;text-align:center;text-decoration:none;color:inherit">
+        <h3>Comunidade</h3><p class="muted">Alertas e membros</p></a>
+      <a class="glass-card" href="mapa.html" style="margin:0;text-align:center;text-decoration:none;color:inherit">
+        <h3>Mapa</h3><p class="muted">A sua posição</p></a>
+      <a class="glass-card" href="observatorio.html" style="margin:0;text-align:center;text-decoration:none;color:inherit">
+        <h3>Histórico</h3><p class="muted">Alertas enviados</p></a>
+    </section>
+
+    <section class="glass-card">
+      <div class="row" style="margin-bottom:12px">
+        <h3 style="margin:0">Contactos de emergência</h3>
+        <a href="cadastro.html" style="font-size:.8rem;font-weight:700;text-decoration:none">Editar</a>
+      </div>
+      <div id="contactos"></div>
+    </section>
+
+    <section class="glass-card">
+      <div class="row" style="margin-bottom:12px">
+        <h3 style="margin:0">🚓 Polícia mais próxima</h3>
+        <a href="cadastro.html#policia" style="font-size:.8rem;font-weight:700;text-decoration:none">Definir</a>
+      </div>
+      <div id="policia"></div>
+    </section>
+
+    <section class="glass-card" style="text-align:center">
+      <h3>Partilhar com vizinhos</h3>
+      <p class="muted" style="margin-bottom:14px">Aponte a câmara para instalar a app.</p>
+      <div style="background:#fff;padding:10px;border-radius:12px;display:inline-block">
+        <img id="qr" alt="QR Code para abrir o PROTECTTÚ" width="140" height="140" style="display:block">
+      </div>
+      <p class="muted" id="qrErro" style="margin-top:8px"></p>
+    </section>
+  </div>
+
+  <div id="nav"></div>
+  <script src="common.js"></script>
+  <script src="alarm.js"></script>
+  <script src="home.js"></script>
+  <script type="module" src="alarmwatch.js"></script>
+</body>
+</html>

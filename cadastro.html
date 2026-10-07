@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://*.firebasedatabase.app https://*.firebaseio.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https: wss:; frame-src https://*.firebaseapp.com https://*.firebasedatabase.app https://*.firebaseio.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PROTECTTÚ - Cadastro</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#05070a">
+</head>
+<body>
+  <div class="container page-fade-in">
+    <header>
+      <h1 class="logo-title">CADASTRO</h1>
+      <p class="subtitle">Quem avisar quando precisar de ajuda</p>
+    </header>
+
+    <form id="form" class="glass-card" novalidate>
+      <div class="form-group">
+        <label for="nome">O seu nome</label>
+        <input id="nome" class="form-control" autocomplete="name" placeholder="Ex: Carlos Silva" required maxlength="40">
+      </div>
+      <div class="form-group">
+        <label for="trat">Como devemos tratá-lo(a)?</label>
+        <select id="trat" class="form-control"><option value="senhor">Senhor</option><option value="senhora">Senhora</option></select>
+      </div>
+      <div class="form-group">
+        <label for="tel">O seu telefone (para receber alarmes dos seus contactos)</label>
+        <input id="tel" class="form-control" type="tel" autocomplete="tel" placeholder="9XX XXX XXX">
+      </div>
+
+      <h3>Quem avisar quando precisar de ajuda (até 5)</h3>
+      <p class="muted" style="margin-bottom:10px">Recebem o SMS de socorro. Se também tiverem o PROTECTTÚ e estiverem na sua comunidade, o telemóvel deles toca a sirene.</p>
+      <div id="contacts"></div>
+
+      <h3 id="policia">🚓 Polícia mais próxima (opcional)</h3>
+      <p class="muted" style="margin-bottom:10px">Dirija-se à unidade policial da sua zona e peça o número que aceita estes avisos. Escreva-o aqui.</p>
+      <div class="form-group"><input id="polNome" class="form-control" placeholder="Unidade (ex: Esquadra do Cazenga)" maxlength="60" aria-label="Nome da unidade"></div>
+      <div class="form-group"><input id="polNum" class="form-control" type="tel" placeholder="Número da unidade" aria-label="Número da polícia"><div class="field-error" id="errP"></div></div>
+      <div class="form-group"><label for="polEspera">Se ninguém responder em…</label>
+        <select id="polEspera" class="form-control"><option value="5">5 minutos</option><option value="10">10 minutos</option><option value="15">15 minutos</option><option value="30">30 minutos</option></select></div>
+      <div class="notice"><label class="check"><input type="checkbox" id="polOk"><span>Autorizo o PROTECTTÚ a preparar uma mensagem para este número se ninguém responder ao meu S.O.S no tempo escolhido, e partilhar este número com a Central junto do alerta. Confirmo que obtive este número junto da unidade. Sei que alarmes falsos podem ter consequências.</span></label></div>
+
+      <div class="form-group">
+        <label for="motivo">Motivo de uso</label>
+        <select id="motivo" class="form-control">
+          <option value="">Selecione…</option>
+          <option>Proteção no deslocamento noturno</option>
+          <option>Monitoramento familiar e comunitário</option>
+          <option>Trabalho de campo ou áreas isoladas</option>
+          <option>Prevenção geral de segurança</option>
+        </select>
+      </div>
+
+      <div class="notice">
+        <label class="check">
+          <input type="checkbox" id="consent">
+          <span>Compreendo que o S.O.S abre a app de SMS do telemóvel com a mensagem e a minha localização já escritas, e que tenho de carregar em <strong>Enviar</strong>. Autorizo guardar estes dados <strong>neste aparelho</strong>. O telefone só vai para a nuvem se eu o indicar ao entrar numa comunidade.</span>
+        </label>
+        <div class="field-error" id="errC"></div>
+      </div>
+
+      <button class="btn-primary" type="submit">Guardar e continuar</button>
+    </form>
+  </div>
+
+  <div id="nav"></div>
+  <script src="common.js"></script>
+  <script src="alarm.js"></script>
+  <script src="cadastro.js"></script>
+  <script type="module" src="alarmwatch.js"></script>
+</body>
+</html>

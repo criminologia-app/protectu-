@@ -1,0 +1,195 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "communities": {
+      "$cid": {
+        ".write": "auth != null && !data.exists() && newData.child('meta/adminUid').val() === auth.uid && newData.child('secret/joinKey').exists() && newData.child('members/'+auth.uid+'/key').val() === newData.child('secret/joinKey').val()",
+        ".validate": "newData.hasChildren(['meta','secret','members'])",
+        "meta": {
+          ".read": "(auth != null && root.child('communities/'+$cid+'/members/'+auth.uid).exists()) || (auth != null && root.child('admins/'+auth.uid).val() === true)",
+          ".validate": "newData.hasChildren(['name','adminUid','created'])",
+          "name": {
+            ".validate": "newData.isString() && newData.val().length >= 3 && newData.val().length <= 40"
+          },
+          "adminUid": {
+            ".validate": "newData.isString()"
+          },
+          "created": {
+            ".validate": "newData.val() === now"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "secret": {
+          ".read": false,
+          "joinKey": {
+            ".validate": "newData.isString() && newData.val().length === 64"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "info": {
+          ".read": "(auth != null && root.child('communities/'+$cid+'/members/'+auth.uid).exists()) || (auth != null && root.child('admins/'+auth.uid).val() === true)",
+          ".write": "auth != null && root.child('communities/'+$cid+'/meta/adminUid').val() === auth.uid",
+          "description": {
+            ".validate": "newData.isString() && newData.val().length <= 500"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "members": {
+          ".read": "(auth != null && root.child('communities/'+$cid+'/members/'+auth.uid).exists()) || (auth != null && root.child('admins/'+auth.uid).val() === true)",
+          "$uid": {
+            ".write": "auth != null && ((auth.uid === $uid && (!newData.exists() || (root.child('communities/'+$cid+'/secret/joinKey').exists() && newData.child('key').val() === root.child('communities/'+$cid+'/secret/joinKey').val()))) || (!newData.exists() && root.child('communities/'+$cid+'/meta/adminUid').val() === auth.uid))",
+            ".validate": "newData.hasChildren(['name','joined','key'])",
+            "name": {
+              ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 40"
+            },
+            "joined": {
+              ".validate": "newData.val() === now"
+            },
+            "key": {
+              ".validate": "newData.isString() && newData.val().length === 64"
+            },
+            "phone": {
+              ".validate": "newData.isString() && newData.val().length <= 20"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "alerts": {
+          ".read": "(auth != null && root.child('communities/'+$cid+'/members/'+auth.uid).exists()) || (auth != null && root.child('admins/'+auth.uid).val() === true)",
+          "$aid": {
+            ".write": "auth != null && ((!data.exists() && newData.exists() && root.child('communities/'+$cid+'/members/'+auth.uid).exists() && newData.child('uid').val() === auth.uid) || (data.exists() && !newData.exists() && root.child('communities/'+$cid+'/meta/adminUid').val() === auth.uid))",
+            ".validate": "newData.hasChildren(['uid','user','text','ts','type'])",
+            "uid": {
+              ".validate": "newData.isString()"
+            },
+            "user": {
+              ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 40"
+            },
+            "text": {
+              ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 500"
+            },
+            "ts": {
+              ".validate": "newData.val() === now"
+            },
+            "type": {
+              ".validate": "newData.val() === 'alerta' || newData.val() === 'sos'"
+            },
+            "lat": {
+              ".validate": "newData.isNumber() && newData.val() >= -90 && newData.val() <= 90"
+            },
+            "lng": {
+              ".validate": "newData.isNumber() && newData.val() >= -180 && newData.val() <= 180"
+            },
+            "$other": {
+              ".validate": false
+            },
+            "acks": {
+              "$uid": {
+                ".write": "auth != null && auth.uid === $uid && root.child('communities/'+$cid+'/members/'+auth.uid).exists()",
+                ".validate": "newData.val() === now"
+              }
+            },
+            "pol": {
+              ".validate": "newData.isString() && newData.val().length <= 20"
+            },
+            "polNome": {
+              ".validate": "newData.isString() && newData.val().length <= 60"
+            },
+            "handled": {
+              ".write": "auth != null && root.child('admins/'+auth.uid).val() === true",
+              ".validate": "newData.val() === now"
+            },
+            "for": {
+              ".validate": "newData.numChildren() <= 5",
+              "$h": {
+                ".validate": "$h.matches(/^[0-9a-f]{16}$/) && newData.val() === true"
+              }
+            }
+          }
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "admins": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid"
+      }
+    },
+    "index": {
+      ".read": "auth != null && root.child('admins/'+auth.uid).val() === true",
+      "$cid": {
+        ".write": "auth != null && !data.exists() && (newData.child('adminUid').val() === auth.uid || root.child('admins/'+auth.uid).val() === true)",
+        ".validate": "newData.hasChildren(['name','adminUid','created'])",
+        "name": {
+          ".validate": "newData.isString() && newData.val().length >= 3 && newData.val().length <= 40"
+        },
+        "adminUid": {
+          ".validate": "newData.isString()"
+        },
+        "created": {
+          ".validate": "newData.val() === now"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "config": {
+      "police": {
+        ".read": "auth != null && root.child('admins/'+auth.uid).val() === true",
+        ".write": "auth != null && root.child('admins/'+auth.uid).val() === true",
+        "$id": {
+          ".validate": "newData.hasChildren(['name','number'])",
+          "name": {
+            ".validate": "newData.isString() && newData.val().length >= 2 && newData.val().length <= 60"
+          },
+          "number": {
+            ".validate": "newData.isString() && newData.val().length >= 3 && newData.val().length <= 20"
+          },
+          "lat": {
+            ".validate": "newData.isNumber() && newData.val() >= -90 && newData.val() <= 90"
+          },
+          "lng": {
+            ".validate": "newData.isNumber() && newData.val() >= -180 && newData.val() <= 180"
+          },
+          "ts": {
+            ".validate": "newData.val() === now"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    },
+    "presence": {
+      ".read": "auth != null && root.child('admins/'+auth.uid).val() === true",
+      "$uid": {
+        ".write": "auth != null && auth.uid === $uid",
+        ".validate": "newData.hasChildren(['cid','name','ts'])",
+        "cid": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "ts": {
+          ".validate": "newData.val() === now"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    }
+  }
+}

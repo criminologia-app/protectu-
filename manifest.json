@@ -1,0 +1,15 @@
+{
+  "name": "PROTECTTÚ - Segurança em Rede",
+  "short_name": "PROTECTTÚ",
+  "description": "Pedido de socorro por SMS com GPS e rede de alertas comunitária.",
+  "start_url": "./home.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#05070a",
+  "theme_color": "#05070a",
+  "icons": [
+    { "src": "images/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "images/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

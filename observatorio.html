@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://*.firebasedatabase.app https://*.firebaseio.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https: wss:; frame-src https://*.firebaseapp.com https://*.firebasedatabase.app https://*.firebaseio.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PROTECTTÚ - Histórico</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#05070a">
+</head>
+<body>
+  <div class="container page-fade-in">
+    <header>
+      <h1 class="logo-title">HISTÓRICO</h1>
+      <p class="subtitle">Alertas e estado do sistema</p>
+    </header>
+
+    <section class="glass-card">
+      <h3>Estado</h3>
+      <div id="estado"></div>
+    </section>
+
+    <section class="glass-card">
+      <div class="row" style="margin-bottom:10px">
+        <h3 style="margin:0">S.O.S disparados neste aparelho</h3>
+        <button id="limpar" class="btn-secondary btn-sm" type="button">Limpar</button>
+      </div>
+      <div id="hist"></div>
+    </section>
+
+    <section class="glass-card">
+      <h3>Últimos alertas da comunidade</h3>
+      <p class="muted" style="margin-bottom:10px">Cópia guardada no aparelho (visível offline).</p>
+      <div id="com"></div>
+    </section>
+  </div>
+
+  <div id="nav"></div>
+  <script src="common.js"></script>
+  <script src="alarm.js"></script>
+  <script src="observatorio.js"></script>
+  <script type="module" src="alarmwatch.js"></script>
+</body>
+</html>

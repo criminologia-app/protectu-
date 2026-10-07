@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://*.firebasedatabase.app https://*.firebaseio.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https: wss:; frame-src https://*.firebaseapp.com https://*.firebasedatabase.app https://*.firebaseio.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PROTECTTÚ - Mapa</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#05070a">
+  <style>
+    #map{height:320px;border-radius:16px;border:1px solid var(--silver);background:#0b1329;margin-bottom:16px}
+    .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.85) contrast(.9)}
+  </style>
+</head>
+<body>
+  <div class="container page-fade-in">
+    <header>
+      <h1 class="logo-title">MAPA</h1>
+      <p class="subtitle">A sua posição neste aparelho</p>
+    </header>
+
+    <div id="map" role="img" aria-label="Mapa com a sua posição"></div>
+
+    <div class="glass-card">
+      <div id="gps" style="font-weight:700;color:var(--neon);margin-bottom:8px">A procurar sinal GPS…</div>
+      <p id="coords" class="muted" style="font-family:monospace">Lat: --<br>Lng: --</p>
+      <p class="muted" style="margin-top:10px">A posição fica guardada só neste telemóvel e é usada quando carrega no S.O.S. Não é enviada para lado nenhum até ao momento do alerta.</p>
+    </div>
+    <button id="btn" class="btn-primary" type="button">Atualizar posição</button>
+  </div>
+
+  <div id="nav"></div>
+  <script src="common.js"></script>
+  <script src="alarm.js"></script>
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script src="mapa.js"></script>
+  <script type="module" src="alarmwatch.js"></script>
+</body>
+</html>

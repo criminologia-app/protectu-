@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://*.firebasedatabase.app https://*.firebaseio.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https: wss:; frame-src https://*.firebaseapp.com https://*.firebasedatabase.app https://*.firebaseio.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PROTECTTÚ - Comunidade</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#05070a">
+</head>
+<body>
+  <div class="container page-fade-in">
+    <header class="row" style="margin-bottom:8px">
+      <div>
+        <h1 class="logo-title" style="margin:0">COMUNIDADE</h1>
+        <p class="subtitle" style="margin:4px 0 0">Rede de proteção mútua</p>
+      </div>
+      <span class="pill off" id="sync">Local</span>
+    </header>
+    <div style="height:16px"></div>
+
+    <div id="cfgNotice" class="notice hidden">
+      O Firebase ainda não está configurado (<code>firebase-config.js</code>). O S.O.S por SMS continua a funcionar; a comunidade em tempo real fica desativada.
+    </div>
+
+    <!-- Escolha -->
+    <section id="vChoose" class="glass-card">
+      <button class="btn-secondary btn-sm hidden" id="backMain" type="button" style="margin-bottom:12px">← Voltar à minha comunidade</button>
+      <h3>Como quer entrar?</h3>
+      <p class="muted" style="margin-bottom:16px">Crie a sua comunidade ou entre numa existente com a senha.</p>
+      <div class="stack">
+        <button class="btn-primary" id="goCreate" type="button">Criar comunidade</button>
+        <button class="btn-secondary btn-block" id="goJoin" type="button">Entrar numa comunidade</button>
+      </div>
+    </section>
+
+    <!-- Criar / Entrar (mesmo formulário) -->
+    <section id="vForm" class="glass-card hidden">
+      <button class="btn-secondary btn-sm" id="back" type="button" style="margin-bottom:14px">← Voltar</button>
+      <h3 id="formTitle">Criar comunidade</h3>
+      <form id="form" novalidate>
+        <div class="form-group"><label for="fUser">O seu nome</label>
+          <input id="fUser" class="form-control" maxlength="40" autocomplete="name" required></div>
+        <div class="form-group"><label for="fComm">Nome da comunidade</label>
+          <input id="fComm" class="form-control" maxlength="40" placeholder="Ex: Bairro Luz" required></div>
+        <div class="form-group"><label for="fPass">Senha da comunidade</label>
+          <input id="fPass" class="form-control" type="password" minlength="8" autocomplete="off" required>
+          <div class="muted" style="margin-top:4px">Mínimo 8 caracteres — use uma frase longa. Partilhe-a só com quem confia.</div></div>
+        <div class="form-group"><label class="check">
+          <input type="checkbox" id="fShare"><span>Partilhar o meu telefone com os membros (para SMS direto)</span></label></div>
+        <div class="field-error" id="fErr" role="alert"></div>
+        <button class="btn-primary" id="fSubmit" type="submit">Continuar</button>
+      </form>
+    </section>
+
+    <!-- Painel -->
+    <section id="vMain" class="hidden">
+      <div class="glass-card row">
+        <div class="grow">
+          <h2 id="mTitle" style="font-size:1.15rem;word-break:break-word">Comunidade</h2>
+          <span class="muted" id="mUser"></span>
+        </div>
+        <div class="row" style="gap:6px"><button class="btn-secondary btn-sm" id="other" type="button">＋ Outra</button><div class="row"><button class="btn-secondary btn-sm" id="other" type="button">＋ Criar / entrar noutra</button><button class="btn-secondary btn-sm" id="leave" type="button">Sair</button></div></div>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="tAlerts" role="tab">🚨 Alertas</button>
+        <button class="tab" data-tab="tMembers" role="tab">👥 Membros (<span id="mCount">0</span>)</button>
+        <button class="tab" data-tab="tInfo" role="tab">ℹ️ Sobre</button>
+      </div>
+
+      <div id="tAlerts" class="tabpane">
+        <form id="aForm" class="glass-card">
+          <div class="form-group"><label for="aText">Novo alerta para a comunidade</label>
+            <textarea id="aText" class="form-control" maxlength="500" rows="3" placeholder="O que está a acontecer e onde?" required></textarea></div>
+          <label class="check" style="margin-bottom:12px"><input type="checkbox" id="aLoc" checked><span>Incluir a minha localização (aparece no mapa da Central)</span></label>
+          <div class="form-group"><label class="check"><input type="checkbox" id="aLoc" checked><span>Incluir a minha localização (aparece no mapa da Central)</span></label></div>
+          <button class="btn-danger" type="submit">Enviar alerta</button>
+        </form>
+        <div id="aList"></div>
+      </div>
+
+      <div id="tMembers" class="tabpane hidden">
+        <div id="mList"></div>
+        <a id="smsAll" class="btn-secondary btn-block hidden" href="#">📲 SMS para todos com telefone</a>
+      </div>
+
+      <div id="tInfo" class="tabpane hidden glass-card">
+        <h3>Sobre esta comunidade</h3>
+        <p id="iText" class="muted" style="white-space:pre-wrap;margin-bottom:12px">Sem descrição.</p>
+        <form id="iForm" class="hidden">
+          <div class="form-group"><label for="iEdit">Descrição / regras (só o administrador edita)</label>
+            <textarea id="iEdit" class="form-control" maxlength="500" rows="4"></textarea></div>
+          <button class="btn-primary" type="submit">Guardar</button>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <div id="nav"></div>
+  <script src="common.js"></script>
+  <script src="alarm.js"></script>
+  <script type="module" src="comunidade.js"></script>
+  <script type="module" src="alarmwatch.js"></script>
+</body>
+</html>
