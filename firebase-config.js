@@ -1,5 +1,5 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyBR89KAT_xT8XEhJiHe0pfszc7ApnGe1dc",
+  apiKey: "",
   authDomain: "protectu-639e5.firebaseapp.com",
   databaseURL: "https://protectu-639e5-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "protectu-639e5",
